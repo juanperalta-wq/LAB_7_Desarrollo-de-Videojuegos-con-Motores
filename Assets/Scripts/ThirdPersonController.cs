@@ -62,6 +62,8 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Awake()
     {
+        OnMoveAll?.Invoke();
+
         inputs = new();
         controller = GetComponent<CharacterController>();
 

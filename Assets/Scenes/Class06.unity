@@ -1029,7 +1029,7 @@ Transform:
   m_GameObject: {fileID: 743117323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.187, y: 0.37, z: 0.537}
+  m_LocalPosition: {x: -0.273, y: 0.37, z: 0.537}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2133,11 +2133,20 @@ PrefabInstance:
       propertyPath: LightsModule.enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+--- !u!1 &1187027827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8268548803744040526, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
+  m_PrefabInstance: {fileID: 1454522485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1237315653 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3864931477832604269, guid: 506dbe46f728ffe438ef8854c726485e, type: 3}
@@ -7079,6 +7088,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5758418716855599533, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
   m_PrefabInstance: {fileID: 1454522485}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1358709778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187027827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2736f6ab6c5dd2743aec00953aba540b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MuzzleController
+  Enemy: {fileID: 154281977}
+  BulletPrefab: {fileID: 160796, guid: b955daae02e019d45a8fb68cfd843784, type: 3}
+  headTurret: {fileID: 1187027827}
+  FirePointRight: {fileID: 1931681910}
+  FirePointLeft: {fileID: 743117324}
+  aimMode: 0
+  rotationSpeed: 2
+  BulletSpeed: 10
 --- !u!1 &1428149766
 GameObject:
   m_ObjectHideFlags: 0
@@ -7182,7 +7211,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5758418716855599533, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 743117324}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8268548803744040526, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1358709778}
   m_SourcePrefab: {fileID: 100100000, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
 --- !u!1 &1525180214
 GameObject:
@@ -7580,7 +7612,7 @@ Transform:
   m_GameObject: {fileID: 1931681909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.155, y: 0.37, z: 0.537}
+  m_LocalPosition: {x: 0.244, y: 0.37, z: 0.537}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

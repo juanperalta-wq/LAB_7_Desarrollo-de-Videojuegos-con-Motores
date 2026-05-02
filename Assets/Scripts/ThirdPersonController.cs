@@ -53,12 +53,18 @@ public class ThirdPersonController : MonoBehaviour
     [FoldoutGroup("WallRun")]
     public bool enableWallRun;
 
+    [FoldoutGroup("VFX")]
+    public ParticleSystem shootParticles;
+    public ParticleSystem impactParticles;
+
+    public Transform WeaponShootAnchor;
+
+
     public bool aimMode = false;
 
     Vector3 normalDebug;
     Vector3 impactPoint;
     Vector3 crossResult;
-    public Transform WeaponShootAnchor;
 
     private void Awake()
     {
@@ -97,22 +103,6 @@ public class ThirdPersonController : MonoBehaviour
 
         // inputs.Player.Sprint.performed += OnDash;
         inputs.Player.Attack.performed += OnAtack;
-    }
-
-    private void OnAtack (InputAction.CallbackContext context)
-    {
-        Debug.Log("Attack");
-        Physics.Raycast(WeaponShootAnchor.position, characterAimCamera.transform.forward, out RaycastHit hit, 100);
-
-        
-        if(hit.collider != null)
-        {
-            LineRenderer ray = Instantiate(Rayprefab, transform.position, Quaternion.identity);
-            ray.gameObject.transform.position = WeaponShootAnchor.position;
-            ray.positionCount = 2;
-            ray.SetPosition(0, WeaponShootAnchor.position);
-            ray.SetPosition(1, hit.point);
-        }
     }
 
     void Start()
@@ -238,6 +228,36 @@ public class ThirdPersonController : MonoBehaviour
     {
         IsDashing = true;
         dashTimer = dashDuration;
+    }
+    private void OnAtack(InputAction.CallbackContext context)
+    {
+        Debug.Log("Attack");
+
+        // DIRECCIÓN DEL DISPARO
+        Vector3 dir = characterAimCamera.transform.forward;
+
+        // PARTICULA DE DISPARO
+        Quaternion shootRot = Quaternion.LookRotation(dir);
+        ParticleSystem shoot = Instantiate(shootParticles, WeaponShootAnchor.position, shootRot);
+        shoot.Play();
+        Destroy(shoot.gameObject, 0.3f);
+
+        // RAYCAST
+        if (Physics.Raycast(WeaponShootAnchor.position, dir, out RaycastHit hit, 100))
+        {
+            // LineRenderer
+            LineRenderer ray = Instantiate(Rayprefab, transform.position, Quaternion.identity);
+            ray.transform.position = WeaponShootAnchor.position;
+            ray.positionCount = 2;
+            ray.SetPosition(0, WeaponShootAnchor.position);
+            ray.SetPosition(1, hit.point);
+            Destroy(ray.gameObject, 0.1f);
+
+            // IMPACTO
+            Quaternion rot = Quaternion.LookRotation(hit.normal);
+            ParticleSystem impact = Instantiate(impactParticles, hit.point, rot);
+            impact.Play();
+        }
     }
 
     public void EnableWallRun()

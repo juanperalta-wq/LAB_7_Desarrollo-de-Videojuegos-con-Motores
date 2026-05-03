@@ -16,6 +16,8 @@ public class MuzzleController : MonoBehaviour
     private float nextFireTime = 0f;
     private bool useRightFirePoint = true;
 
+    public ParticleSystem ShootParticlesLeft;
+    public ParticleSystem ShootParticlesRight;
     void Start()
     {
 
@@ -47,9 +49,12 @@ public class MuzzleController : MonoBehaviour
             nextFireTime = Time.time + fireRate;
 
             Transform currentFirePoint = useRightFirePoint ? FirePointRight : FirePointLeft;
+            ParticleSystem currentParticles = useRightFirePoint ? ShootParticlesRight : ShootParticlesLeft;
             useRightFirePoint = !useRightFirePoint;
 
             Debug.Log("Torreta Dispara");
+            currentParticles.Play();
+
             GameObject bullet = Instantiate(BulletPrefab, currentFirePoint.position, currentFirePoint.rotation);
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();

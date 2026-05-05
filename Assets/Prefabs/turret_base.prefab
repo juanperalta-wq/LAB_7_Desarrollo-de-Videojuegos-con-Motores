@@ -114,6 +114,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: turret_base
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b31059729ac0c1841b2b68babd8c1bdd, type: 3}
+      propertyPath: m_TagString
+      value: Turret
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -156,13 +160,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2736f6ab6c5dd2743aec00953aba540b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MuzzleController
-  PrefabEnemy: {fileID: 1738627772588365500, guid: 905667d6d7dddf149827ef23034a0921, type: 3}
+  ListaEnemigos: 
+  Enemy: {fileID: 0}
   BulletPrefab: {fileID: 160796, guid: b955daae02e019d45a8fb68cfd843784, type: 3}
   headTurret: {fileID: 8001087247913123989}
   FirePointRight: {fileID: 7951605058896678230}
   FirePointLeft: {fileID: 9135111235992509239}
   rotationSpeed: 2
   BulletSpeed: 10
+  RatioDetection: 15
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
   ShootParticlesLeft: {fileID: 3534207395089265944}
   ShootParticlesRight: {fileID: 3798106857942254727}
 --- !u!1001 &3534207395107813660

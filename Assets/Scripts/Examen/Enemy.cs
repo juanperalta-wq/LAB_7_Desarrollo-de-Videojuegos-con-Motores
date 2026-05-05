@@ -16,16 +16,27 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-   { 
+   {
+        Destination();
+        OnDead();
+    }
+    public void HasPath()
+    {
+        print(agent.hasPath);
+    }
+    public void Destination()
+    {
         if (Player != null)
         {
             agent.SetDestination(Player.position);
 
         }
     }
-    public void HasPath()
+    public void OnDead()
     {
-        print(agent.hasPath);
+        if(lifeEnemy <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
-
 }

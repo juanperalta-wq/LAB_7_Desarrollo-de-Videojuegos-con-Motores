@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6883894638010822211}
   - component: {fileID: 9006981146040766408}
   - component: {fileID: 2575639742841105799}
-  - component: {fileID: 6739277089938394548}
+  - component: {fileID: 336486555564807409}
   m_Layer: 0
   m_Name: Granade
   m_TagString: Untagged
@@ -108,7 +108,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6739277089938394548
+--- !u!114 &336486555564807409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280bfc0394a76b54ab5c9d5b9e2cf0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Granade
-  timer: 3
-  radius: 5
+  timer: 1
+  radius: 3
   mask:
     serializedVersion: 2
     m_Bits: 8

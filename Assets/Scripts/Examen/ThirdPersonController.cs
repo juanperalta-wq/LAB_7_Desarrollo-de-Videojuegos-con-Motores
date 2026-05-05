@@ -23,6 +23,8 @@ public class ThirdPersonController : MonoBehaviour
     [FoldoutGroup("Controller")]
     public float moveSpeed = 5f;
     [FoldoutGroup("Controller")]
+    public int life;
+    [FoldoutGroup("Controller")]
     public float rotationSpeed = 200f;
     [FoldoutGroup("Controller")]
     public float verticalVelocity = 0;
@@ -61,8 +63,9 @@ public class ThirdPersonController : MonoBehaviour
     public ParticleSystem impactParticles;
 
     public Transform WeaponShootAnchor;
-    public LayerMask EnemyLayer;
-   
+    public LayerMask wall;
+    public LayerMask Enemy; 
+
     public bool aimMode = false;
 
     Vector3 normalDebug;
@@ -107,6 +110,7 @@ public class ThirdPersonController : MonoBehaviour
         inputs.Player.launch.performed += ThrowSwt;
         // inputs.Player.Sprint.performed += OnDash;
         inputs.Player.Attack.performed += OnAttack;
+        inputs.Player.CreateTorret.performed += OnCreateTorret;
     }
 
     void Start()
@@ -228,13 +232,9 @@ public class ThirdPersonController : MonoBehaviour
             hit.rigidbody.AddForce(pushDir * pushForce, ForceMode.Impulse);
         }
     }
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnCreateTorret(InputAction.CallbackContext context)
     {
-        OnAttackEvent?.Invoke();
-        source.GenerateImpulse();
-        //Debug.Log("Attack");
-        //if (Physics.SphereCast(WeaponShootAnchor.position,5f ,characterAimCamera.transform.forward, out RaycastHit hit, 100f ,EnemyLayer)) //spherecast
-        if (Physics.Raycast(WeaponShootAnchor.position, characterAimCamera.transform.forward, out RaycastHit hit, 100f ,EnemyLayer)) //Raycast
+        if (Physics.Raycast(WeaponShootAnchor.position, characterAimCamera.transform.forward, out RaycastHit hit, 100f, wall)) //Raycast
         {
             Debug.Log("Hit smt");
 
@@ -261,7 +261,39 @@ public class ThirdPersonController : MonoBehaviour
         {
             Debug.Log("Miss");
         }
+    }
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        OnAttackEvent?.Invoke();
+        source.GenerateImpulse();
+        //Debug.Log("Attack");
+        //if (Physics.SphereCast(WeaponShootAnchor.position,5f ,characterAimCamera.transform.forward, out RaycastHit hit, 100f ,EnemyLayer)) //spherecast
+        if (Physics.Raycast(WeaponShootAnchor.position, characterAimCamera.transform.forward, out RaycastHit hit, 100f , Enemy)) //Raycast
+        {
+            Debug.Log("Hit smt");
 
+            LineRenderer ray = Instantiate(Rayprefab, transform.position, Quaternion.identity);
+
+            ray.gameObject.transform.position = WeaponShootAnchor.position;
+
+            ray.positionCount = 2;
+
+            ray.SetPosition(0, WeaponShootAnchor.position);
+
+            ray.SetPosition(1, hit.point);
+            Destroy(ray.gameObject, 0.1f);
+
+            // IMPACTO
+            Quaternion rot = Quaternion.LookRotation(hit.normal);
+            GameObject obj = hit.collider.gameObject;
+            obj.GetComponent<Enemy>().lifeEnemy = -20;
+            ParticleSystem impact = Instantiate(impactParticles, hit.point, rot);
+            impact.Play();
+        }
+        else
+        {
+            Debug.Log("Miss");
+        }
     }
 
     private void ThrowSwt(InputAction.CallbackContext context)
@@ -276,37 +308,6 @@ public class ThirdPersonController : MonoBehaviour
         IsDashing = true;
         dashTimer = dashDuration;
     }
-    private void OnAtack(InputAction.CallbackContext context)
-    {
-        Debug.Log("Attack");
-
-        // DIRECCIÓN DEL DISPARO
-        Vector3 dir = characterAimCamera.transform.forward;
-
-        // PARTICULA DE DISPARO
-        Quaternion shootRot = Quaternion.LookRotation(dir);
-        ParticleSystem shoot = Instantiate(shootParticles, WeaponShootAnchor.position, shootRot);
-        shoot.Play();
-        Destroy(shoot.gameObject, 0.3f);
-
-        // RAYCAST
-        if (Physics.Raycast(WeaponShootAnchor.position, dir, out RaycastHit hit, 100))
-        {
-            // LineRenderer
-            LineRenderer ray = Instantiate(Rayprefab, transform.position, Quaternion.identity);
-            ray.transform.position = WeaponShootAnchor.position;
-            ray.positionCount = 2;
-            ray.SetPosition(0, WeaponShootAnchor.position);
-            ray.SetPosition(1, hit.point);
-            Destroy(ray.gameObject, 0.1f);
-
-            // IMPACTO
-            Quaternion rot = Quaternion.LookRotation(hit.normal);
-            ParticleSystem impact = Instantiate(impactParticles, hit.point, rot);
-            impact.Play();
-        }
-    }
-
     public void EnableWallRun()
     {
         //->mejor castearlo desde una referenia en los piez

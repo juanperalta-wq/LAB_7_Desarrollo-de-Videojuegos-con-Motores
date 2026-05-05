@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Events;
-using Sirenix.OdinInspector;
 using System.Collections.Generic;
+
 public class MuzzleController : MonoBehaviour
 {
     public List<int> ListaEnemigos;
@@ -16,6 +15,8 @@ public class MuzzleController : MonoBehaviour
     public float BulletSpeed = 20f;
 
     public float RatioDetection = 10;
+    public LayerMask enemyLayer;
+
     private float fireRate = 1f;
     private float nextFireTime = 0f;
     private bool useRightFirePoint = true;
@@ -30,24 +31,39 @@ public class MuzzleController : MonoBehaviour
     void Update()
     {
         Detection();
-        Shoot();
+        if (Enemy != null)
+        {
+            Shoot();
+        }
     }
 
     public void Detection()
     {
-        if (Enemy == null) return;
+        //detección automática con OverlapSphere
+        Collider[] enemies = Physics.OverlapSphere(transform.position, RatioDetection, enemyLayer);
 
-        Vector3 HeadDir = (Enemy.transform.position - transform.position);
+        if (enemies.Length == 0)
+        {
+            Enemy = null;
+            return;
+        }
 
-        Quaternion targetQuaternion = Quaternion.LookRotation(HeadDir);
+        Enemy = enemies[0].transform;
 
-        headTurret.transform.rotation = Quaternion.Slerp(headTurret.transform.rotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+        Vector3 dir = Enemy.position - transform.position;
+        Quaternion targetQuaternion = Quaternion.LookRotation(dir);
 
-        float distanceToEnemy = Vector3.Distance(transform.position, Enemy.transform.position);
-        if (distanceToEnemy > 15f) return;
+        headTurret.transform.rotation = Quaternion.Slerp(headTurret.transform.rotation,targetQuaternion,rotationSpeed * Time.deltaTime);
     }
+
     public void Shoot()
     {
+        if (Enemy == null) return;
+
+        //control de distancia real
+        float distance = Vector3.Distance(transform.position, Enemy.position);
+        if (distance > RatioDetection) return;
+
         if (Time.time >= nextFireTime)
         {
             nextFireTime = Time.time + fireRate;
@@ -67,7 +83,13 @@ public class MuzzleController : MonoBehaviour
             {
                 rb.linearVelocity = currentFirePoint.forward * BulletSpeed;
             }
+
             Destroy(bullet, 3f);
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, RatioDetection);
     }
 }

@@ -250,11 +250,18 @@ public class ThirdPersonController : MonoBehaviour
             ray.SetPosition(0, WeaponShootAnchor.position);
 
             ray.SetPosition(1, hit.point);
+            Destroy(ray.gameObject, 0.1f);
+
+            // IMPACTO
+            Quaternion rot = Quaternion.LookRotation(hit.normal);
+            ParticleSystem impact = Instantiate(impactParticles, hit.point, rot);
+            impact.Play();
         }
         else
         {
             Debug.Log("Miss");
         }
+
     }
 
     private void ThrowSwt(InputAction.CallbackContext context)
@@ -340,6 +347,7 @@ public class ThirdPersonController : MonoBehaviour
             }
         }
     }
+
     public float GetSpeed()
     {
         return Mathf.Abs(controller.velocity.magnitude);

@@ -16,28 +16,16 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+   { 
         if (Player != null)
         {
             agent.SetDestination(Player.position);
-            //agent.
 
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bomb"))
-        {
-
-            Destroy(gameObject, 2f);
-            count++;
-
-        }
-    }
-
     public void HasPath()
     {
         print(agent.hasPath);
     }
+
 }

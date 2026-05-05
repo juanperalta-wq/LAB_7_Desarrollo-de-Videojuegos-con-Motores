@@ -10,6 +10,10 @@ public class SpawnEnemy : MonoBehaviour
 
     void Update()
     {
+        TiempoSpawn();
+    }
+    public void TiempoSpawn()
+    {
         timer += Time.deltaTime;
         if (timer >= spawnInterval)
         {
@@ -24,13 +28,18 @@ public class SpawnEnemy : MonoBehaviour
             return;
         }
         int current = GameObject.FindGameObjectsWithTag("Enemy").Length;
+
         if (current >= maxEnemys) return;
+
         Vector3 pos = spawnPoint != null ? spawnPoint.position : transform.position;
+
         GameObject go = Instantiate(prefabEnemy, pos, Quaternion.identity);
+
         var enemy = go.GetComponent<Enemy>();
         if (enemy != null)
         {
             var player = GameObject.FindGameObjectWithTag("Player");
+
             if (player != null) enemy.Player = player.transform;
         }
     }

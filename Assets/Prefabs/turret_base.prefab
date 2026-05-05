@@ -156,12 +156,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2736f6ab6c5dd2743aec00953aba540b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MuzzleController
-  Enemy: {fileID: 0}
+  PrefabEnemy: {fileID: 1738627772588365500, guid: 905667d6d7dddf149827ef23034a0921, type: 3}
   BulletPrefab: {fileID: 160796, guid: b955daae02e019d45a8fb68cfd843784, type: 3}
   headTurret: {fileID: 8001087247913123989}
   FirePointRight: {fileID: 7951605058896678230}
   FirePointLeft: {fileID: 9135111235992509239}
-  aimMode: 0
   rotationSpeed: 2
   BulletSpeed: 10
   ShootParticlesLeft: {fileID: 3534207395089265944}

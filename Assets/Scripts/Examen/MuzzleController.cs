@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 public class MuzzleController : MonoBehaviour
 {
+    public List<int> ListaEnemigos;
+
     public Transform Enemy;
     public GameObject BulletPrefab;
     public GameObject headTurret;
@@ -12,6 +15,7 @@ public class MuzzleController : MonoBehaviour
     public float rotationSpeed;
     public float BulletSpeed = 20f;
 
+    public float RatioDetection = 10;
     private float fireRate = 1f;
     private float nextFireTime = 0f;
     private bool useRightFirePoint = true;
@@ -36,7 +40,7 @@ public class MuzzleController : MonoBehaviour
         Vector3 HeadDir = (Enemy.transform.position - transform.position);
 
         Quaternion targetQuaternion = Quaternion.LookRotation(HeadDir);
-        //transform.rotation = targetQuaternion;
+
         headTurret.transform.rotation = Quaternion.Slerp(headTurret.transform.rotation, targetQuaternion, rotationSpeed * Time.deltaTime);
 
         float distanceToEnemy = Vector3.Distance(transform.position, Enemy.transform.position);

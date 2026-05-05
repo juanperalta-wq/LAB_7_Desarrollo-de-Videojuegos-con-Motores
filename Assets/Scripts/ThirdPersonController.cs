@@ -43,6 +43,7 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private Vector2 moveInput;
 
     public UnityEvent OnMoveAll;
+    public UnityEvent OnAttackEvent;
 
     [FoldoutGroup("WallRun")]
     public float rayLenght;
@@ -58,7 +59,7 @@ public class ThirdPersonController : MonoBehaviour
     public ParticleSystem impactParticles;
 
     public Transform WeaponShootAnchor;
-
+    public LayerMask EnemyLayer;
 
     public bool aimMode = false;
 
@@ -222,6 +223,30 @@ public class ThirdPersonController : MonoBehaviour
         {
             print(hit.gameObject.name);
             hit.rigidbody.AddForce(pushDir * pushForce, ForceMode.Impulse);
+        }
+    }
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        OnAttackEvent?.Invoke();
+        source.GenerateImpulse();
+        //Debug.Log("Attack");
+        if (Physics.SphereCast(WeaponShootAnchor.position,5f ,characterAimCamera.transform.forward, out RaycastHit hit, 100f ,EnemyLayer)) //spherecast
+        //if (Physics.Raycast(WeaponShootAnchor.position, characterAimCamera.transform.forward, out RaycastHit hit, 100f ,EnemyLayer)) //Raycast
+        {
+            Debug.Log("Hit smt");
+            LineRenderer ray = Instantiate(Rayprefab, transform.position, Quaternion.identity);
+
+            ray.gameObject.transform.position = WeaponShootAnchor.position;
+
+            ray.positionCount = 2;
+
+            ray.SetPosition(0, WeaponShootAnchor.position);
+
+            ray.SetPosition(1, hit.point);
+        }
+        else
+        {
+            Debug.Log("Miss");
         }
     }
     private void OnDash(InputAction.CallbackContext context)

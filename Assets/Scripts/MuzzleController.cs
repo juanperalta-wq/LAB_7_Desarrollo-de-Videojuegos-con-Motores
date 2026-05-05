@@ -3,12 +3,12 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 public class MuzzleController : MonoBehaviour
 {
-    public GameObject Enemy;
+    public Transform Enemy;
     public GameObject BulletPrefab;
     public GameObject headTurret;
     public Transform FirePointRight;
     public Transform FirePointLeft;
-    public bool aimMode;
+
     public float rotationSpeed;
     public float BulletSpeed = 20f;
 
